@@ -1,62 +1,276 @@
 // write your code here
 
 
-const baseURL = 'http://localhost:3000/ramens'
+//http://localhost:3000
 
-fetch(baseURL)
-    .then(respObj => respObj.json())
+//FETCH
+fetch('http://localhost:3000/ramens')
+    .then(r => r.json())
     .then(dataArray => {
-        dataArray.forEach(dataObj => {
-            renderRamenBanner(dataObj)
+        dataArray.forEach(ramenObj => {
+            ramenBanner(ramenObj)
         })
-        renderRamenDetail(dataArray[1])
+        dataArray.find(ramenObj => {
+            ramenDetail(ramenObj)
+        })
     })
+
+//RENDER FUNCTIONS
+function ramenBanner(ramenObj) {
+    const ramenBanner = document.getElementById("ramen-menu")
+    const ramenImage = document.createElement('img')
+    ramenImage.src = ramenObj.image
+    ramenBanner.append(ramenImage)
+
+    ramenImage.addEventListener('click', e => {
+        ramenDetail(ramenObj)
+})
+}
+
+function ramenDetail(ramenObj) {
+    const ramenDetail = document.getElementById("ramen-detail")
+    const ramenName = document.querySelector('h2')
+    const ramenRestaurant = document.querySelector('h3')
+    ramenName.textContent = ramenObj.name
+    ramenRestaurant.textContent = ramenObj.restaurant
+    ramenDetail.append(ramenName, ramenRestaurant)
     
-function renderRamenDetail(dataObj) {
-    const imageDetail = document.querySelector(".detail-image")
-    imageDetail.src = dataObj.image
-    const ramenName = document.querySelector(".name")
-    ramenName.textContent = dataObj.name
-    const restaurantName = document.querySelector(".restaurant")
-    restaurantName.textContent = dataObj.restaurant
+    const ramenDetailImg = document.querySelector('.detail-image')
+    ramenDetailImg.src = ramenObj.image
 
     const ramenRating = document.getElementById('rating-display')
-    ramenRating.textContent = dataObj.rating
     const ramenComment = document.getElementById('comment-display')
-    ramenComment.textContent = dataObj.comment
+
+    ramenRating.textContent = ramenObj.rating
+    ramenComment.textContent = ramenObj.comment
+
 }
 
-//RAMEN DETAIL
-function renderRamenBanner(dataObj) {
-    const ramenContainer = document.getElementById('ramen-menu')
-    const ramenImage = document.createElement('img')
-    ramenImage.src = dataObj.image
-    ramenContainer.append(ramenImage)
-
-    ramenImage.addEventListener('click', () => {
-//click on banner pic to display detail
-        renderRamenDetail(dataObj)
-    })
+function ramenUpdated(ramenObj) {
+    //need also to grab ramen id
+    const ramenRating = document.getElementById('rating-display')
+    const ramenComment = document.getElementById('comment-display')
+    ramenRating.textContent = ramenObj.rating
+    ramenComment.textContent = ramenObj.comment
 }
 
-//NEW RAMEN FORM 
-const ramenForm = document.getElementById("new-ramen")
 
-ramenForm.addEventListener('submit', e => {
+
+//FORMS
+const newRamenForm = document.getElementById("new-ramen")
+
+newRamenForm.addEventListener('submit', e => {
     e.preventDefault()
-    let newRamen = {
-
+    const newRamen = {
         name: e.target.name.value,
         restaurant: e.target.restaurant.value,
         image: e.target.image.value,
         rating: e.target.rating.value,
-        comment: e.target["new-comment"].value
-    }
-    renderRamenBanner(newRamen)
-    renderRamenDetail(newRamen)
-    console.log(newRamen)
-    ramenForm.reset()
+        comment: e.target.comment.value  
+        }
+        ramenDetail(newRamen)
+    newRamenForm.reset()
 })
+
+
+
+const updateRamenForm = document.getElementById("edit-ramen")
+updateRamenForm.addEventListener('submit', e => {
+    const updatedRamen = {
+        rating: e.target.rating.value,
+        comment: e.target.comment.value  
+    }
+    ramenUpdated(updatedRamen)
+    updateRamenForm.reset()
+})
+
+
+
+
+
+
+//3. use the form to create a new ramen, which will be added to page
+////doesn't need to persist
+
+
+// // {/* <form id="new-ramen">
+//     <h4>Add New Ramen</h4>
+//     <label for="name">Name: </label>
+//     <input type="text" name="name" id="new-name" />
+//     <label for="restaurant">Restaurant: </label>
+//     <input type="text" name="restaurant" id="new-restaurant" />
+//     <label for="image">Image: </label>
+//     <input type="text" name="image" id="new-image" />
+//     <label for="rating">Rating: </label>
+//     <input type="number" name="rating" id="new-rating" />
+//     <label for="new-comment">Comment: </label>
+//     <textarea name="new-comment" id="new-comment"></textarea>
+//     <input type="submit" value="Create" />
+//   </form> */}
+
+
+// 0:
+// comment: "Delish. Can't go wrong with a classic!"
+// id: 1
+// image: "./assets/ramen/shoyu.jpg"
+// name: "Shoyu Ramen"
+// rating: 7
+// restaurant: "Nonono"
+// [[Prototype]]: Object
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const baseURL = 'http://localhost:3000/ramens'
+
+// fetch(baseURL)
+//     .then(respObj => respObj.json())
+//     .then(dataArray => {
+//         dataArray.forEach(dataObj => {
+//             renderRamenBanner(dataObj)
+//         })
+//         renderRamenDetail(dataArray[1])
+//     })
+    
+// function renderRamenDetail(dataObj) {
+//     const imageDetail = document.querySelector(".detail-image")
+//     imageDetail.src = dataObj.image
+//     const ramenName = document.querySelector(".name")
+//     ramenName.textContent = dataObj.name
+//     const restaurantName = document.querySelector(".restaurant")
+//     restaurantName.textContent = dataObj.restaurant
+
+//     const ramenRating = document.getElementById('rating-display')
+//     ramenRating.textContent = dataObj.rating
+//     const ramenComment = document.getElementById('comment-display')
+//     ramenComment.textContent = dataObj.comment
+// }
+
+// //RAMEN DETAIL
+// function renderRamenBanner(dataObj) {
+//     const ramenContainer = document.getElementById('ramen-menu')
+//     const ramenImage = document.createElement('img')
+//     ramenImage.src = dataObj.image
+//     ramenContainer.append(ramenImage)
+
+//     ramenImage.addEventListener('click', () => {
+// //click on banner pic to display detail
+//         renderRamenDetail(dataObj)
+//     })
+// }
+
+// //NEW RAMEN FORM 
+// const ramenForm = document.getElementById("new-ramen")
+
+// ramenForm.addEventListener('submit', e => {
+//     e.preventDefault()
+//     let newRamen = {
+
+//         name: e.target.name.value,
+//         restaurant: e.target.restaurant.value,
+//         image: e.target.image.value,
+//         rating: e.target.rating.value,
+//         comment: e.target["new-comment"].value
+//     }
+//     renderRamenBanner(newRamen)
+//     renderRamenDetail(newRamen)
+//     console.log(newRamen)
+//     ramenForm.reset()
+// })
 
 //OBJECT IN dataArray
     // 0:
@@ -258,6 +472,4 @@ ramenForm.addEventListener('submit', e => {
 
 
 //     //argument forEach is a function (element, index, whole array)
-//     //first iterating thorugh array 
-        
-    
+//     //first iterating thorugh array
